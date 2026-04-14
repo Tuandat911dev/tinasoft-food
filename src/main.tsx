@@ -1,10 +1,31 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import AppLayout from "./components/layout/app.layout";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ConfigProvider } from "antd";
 
-createRoot(document.getElementById('root')!).render(
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      { index: true, element: <h1>home</h1> },
+      { path: "settings", element: <p>Setting</p> },
+    ],
+  },
+]);
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#ff6b00",
+          borderRadius: 6,
+        },
+      }}
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
   </StrictMode>,
-)
+);
