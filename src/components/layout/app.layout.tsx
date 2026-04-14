@@ -3,8 +3,9 @@ import { useState } from "react";
 import { AppSidebar } from "./app.sidebar";
 import { AppHeader } from "./app.header";
 import { Content } from "antd/es/layout/layout";
-import "../../styles/reset.css"
-import "../../styles/style.css"
+import "../../styles/reset.css";
+import "../../styles/style.css";
+import { Outlet } from "react-router-dom";
 
 const AppLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -43,7 +44,7 @@ const AppLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                 textAlign: "center",
               }}
             >
-              Page content goes here
+              <Outlet />
             </div>
           )}
         </Content>

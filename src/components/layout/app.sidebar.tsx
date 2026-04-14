@@ -7,6 +7,7 @@ import {
   CalendarOutlined,
   DollarCircleOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 
 const NAV_ITEMS: MenuProps["items"] = [
@@ -33,7 +34,11 @@ const NAV_ITEMS: MenuProps["items"] = [
   {
     key: "danh-sach-tai-khoan",
     icon: <DollarCircleOutlined />,
-    label: "Danh sách tài khoản",
+    label: (
+      <Link to="/account">
+        Danh sách tài khoản
+      </Link>
+    ),
   },
 ];
 

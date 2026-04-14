@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import AppLayout from "./components/layout/app.layout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ConfigProvider } from "antd";
+import AccountPage from "./pages/account.page";
 
 const router = createBrowserRouter([
   {
@@ -10,7 +11,7 @@ const router = createBrowserRouter([
     element: <AppLayout />,
     children: [
       { index: true, element: <h1>home</h1> },
-      { path: "settings", element: <p>Setting</p> },
+      { path: "account", element: <AccountPage /> },
     ],
   },
 ]);
