@@ -4,8 +4,6 @@ import { SearchOutlined, DollarCircleOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 type AccountStatus = "Hoạt động" | "Không hoạt động";
 
 interface Account {
@@ -17,8 +15,6 @@ interface Account {
   soDu: number;
   lanCuoiCapNhat: string;
 }
-
-// ─── Mock data ────────────────────────────────────────────────────────────────
 
 const MOCK_DATA: Account[] = [
   {
@@ -113,13 +109,9 @@ const MOCK_DATA: Account[] = [
   },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 const formatCurrency = (value: number) => value.toLocaleString("vi-VN") + " ₫";
 
 const totalBalance = MOCK_DATA.reduce((sum, a) => sum + a.soDu, 0);
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 const AccountTable: React.FC = () => {
   const [search, setSearch] = useState("");
