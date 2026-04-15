@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import AppLayout from "./components/layout/app.layout";
+import AppLayout from "@/components/layout/app.layout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ConfigProvider } from "antd";
-import AccountPage from "./pages/account.page";
+import AccountPage from "@/pages/account.page";
 
 const router = createBrowserRouter([
   {

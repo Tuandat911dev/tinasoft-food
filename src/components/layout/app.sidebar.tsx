@@ -1,7 +1,7 @@
 import { Menu, type MenuProps } from "antd";
 import Sider from "antd/es/layout/Sider";
-import logo from "../../assets/logo.svg";
-import miniLogo from "../../assets/mini-logo.svg";
+import logo from "@/assets/logo.svg";
+import miniLogo from "@/assets/mini-logo.svg";
 import {
   UserOutlined,
   AppstoreOutlined,
