@@ -1,5 +1,7 @@
 import { Menu, type MenuProps } from "antd";
 import Sider from "antd/es/layout/Sider";
+import logo from "../../assets/logo.svg";
+import miniLogo from "../../assets/mini-logo.svg";
 import {
   UserOutlined,
   AppstoreOutlined,
@@ -8,7 +10,6 @@ import {
   DollarCircleOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-
 
 const NAV_ITEMS: MenuProps["items"] = [
   {
@@ -34,11 +35,7 @@ const NAV_ITEMS: MenuProps["items"] = [
   {
     key: "danh-sach-tai-khoan",
     icon: <DollarCircleOutlined />,
-    label: (
-      <Link to="/account">
-        Danh sách tài khoản
-      </Link>
-    ),
+    label: <Link to="/account">Danh sách tài khoản</Link>,
   },
 ];
 
@@ -52,8 +49,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ collapsed, selectedKey, 
   return (
     <Sider
       collapsed={collapsed}
-      collapsedWidth={56}
-      width={220}
+      collapsedWidth={80}
+      width={248}
       style={{
         background: "#fff",
         borderRight: "1px solid #f0f0f0",
@@ -61,96 +58,32 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ collapsed, selectedKey, 
         position: "sticky",
         top: 0,
         overflow: "hidden",
+        flex: "0 0 248px",
+        maxWidth: "248px",
+        minWidth: "248px",
+        width: "2480px",
       }}
     >
       {/* Logo */}
       <div
         style={{
-          height: 56,
           display: "flex",
           alignItems: "center",
-          justifyContent: collapsed ? "center" : "flex-start",
-          padding: collapsed ? 0 : "0 20px",
-          borderBottom: "1px solid #f0f0f0",
-          overflow: "hidden",
-          flexShrink: 0,
+          justifyContent: "center",
+          width: "100%",
+          height: "44px",
+          margin: "10px 0px 20px",
         }}
       >
         {collapsed ? (
-          /* Compact logo: two orange circles */
-          <div style={{ display: "flex", gap: 3 }}>
-            <div
-              style={{
-                width: 12,
-                height: 12,
-                borderRadius: "50%",
-                background: "#ff6b35",
-              }}
-            />
-            <div
-              style={{
-                width: 12,
-                height: 12,
-                borderRadius: "50%",
-                background: "#ff6b35",
-              }}
-            />
+          /* Compact logo */
+          <div style={{ display: "flex", alignItems: "center", gap: 0, justifyContent: "center" }}>
+            <img src={miniLogo} alt="" />
           </div>
         ) : (
-          /* Full logo: TinaFOOD wordmark */
-          <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
-            <span
-              style={{
-                fontSize: 20,
-                fontWeight: 700,
-                color: "#ff6b35",
-                letterSpacing: "-0.5px",
-                lineHeight: 1,
-              }}
-            >
-              Tina
-            </span>
-            <span
-              style={{
-                fontSize: 20,
-                fontWeight: 700,
-                color: "#ff6b35",
-                letterSpacing: "-0.5px",
-                lineHeight: 1,
-              }}
-            >
-              F
-            </span>
-            <div
-              style={{
-                width: 9,
-                height: 9,
-                borderRadius: "50%",
-                background: "#ff6b35",
-                marginBottom: 1,
-              }}
-            />
-            <div
-              style={{
-                width: 9,
-                height: 9,
-                borderRadius: "50%",
-                background: "#ff6b35",
-                marginBottom: 1,
-                marginLeft: 1,
-              }}
-            />
-            <span
-              style={{
-                fontSize: 20,
-                fontWeight: 700,
-                color: "#ff6b35",
-                letterSpacing: "-0.5px",
-                lineHeight: 1,
-              }}
-            >
-              D
-            </span>
+          /* Full logo */
+          <div style={{ display: "flex", alignItems: "center", gap: 0, justifyContent: "center" }}>
+            <img src={logo} alt="" />
           </div>
         )}
       </div>
@@ -185,6 +118,27 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ collapsed, selectedKey, 
         }
         .ant-menu-inline .ant-menu-item::after {
           border-right-color: #ff6b35 !important;
+        }
+        .ant-table-body {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(242, 93, 29, .298) #f1f1f1;
+        }
+        .ant-table-body::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        .ant-table-body::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        .ant-table-body::-webkit-scrollbar-thumb {
+          background: rgba(242, 93, 29, .298);
+          border-radius: 10px;
+          -webkit-transition: background-color .3s ease;
+          transition: background-color .3s ease;
+        }
+        .ant-table-body::-webkit-scrollbar-corner {
+          background: #f1f1f1;
         }
       `}</style>
     </Sider>
