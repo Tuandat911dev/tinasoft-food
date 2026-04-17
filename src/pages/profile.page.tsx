@@ -1,5 +1,5 @@
 import ProfileTable from "@/components/profile/profile.table";
-import { createProfile, getAllProfiles } from "@/services/api/profile.api";
+import { createProfile, deleteProfile, getAllProfiles } from "@/services/api/profile.api";
 import { App, Button } from "antd";
 import { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const [profileData, setProfileData] = useState<IProfile[]>([]);
   const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
-  const [updateData, setUpdateData] = useState<IProfile>(null);
+  const [updateData, setUpdateData] = useState<IProfile | null>(null);
   const { message } = App.useApp();
 
   const loadData = async () => {
@@ -20,6 +20,17 @@ const ProfilePage = () => {
     } catch (error: unknown) {
       message.error("Không thể tải dữ liệu!");
       console.error(error);
+    }
+  };
+
+  const handleDeleteProfile = async (id: string) => {
+    try {
+      await deleteProfile(id);
+      await loadData();
+      message.info("Xoá tài khoản thành công");
+    } catch (error) {
+      console.error(error);
+      message.error("Có lỗi xảy ra");
     }
   };
 
@@ -58,7 +69,12 @@ const ProfilePage = () => {
       >
         Thêm mới
       </Button>
-      <ProfileTable profileData={profileData} setUpdateData={setUpdateData} setOpenModalUpdate={setOpenModalUpdate} />
+      <ProfileTable
+        profileData={profileData}
+        setUpdateData={setUpdateData}
+        setOpenModalUpdate={setOpenModalUpdate}
+        handleDeleteProfile={handleDeleteProfile}
+      />
 
       <ProfileCreateModal
         openModalCreate={openModalCreate}

@@ -78,7 +78,6 @@ const ProfileUpdateModal = (props: IProps) => {
   const handleFinish = async (values: any) => {
     setLoading(true);
     try {
-      console.log(values);
       const { confirmPassword, ...submitData } = values;
       await updateProfile(updateData!.id, submitData);
       handleCancel();

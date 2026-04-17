@@ -64,3 +64,9 @@ export async function updateProfile(userId: string, values: Partial<UpdateProfil
 
   return data;
 }
+
+export async function deleteProfile(userId: string) {
+  const { error } = await supabase.from("profiles").delete().eq("id", userId);
+
+  if (error) throw error;
+}

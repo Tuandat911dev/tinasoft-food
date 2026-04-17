@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { Table, Input, Select, Button, Tag, Typography, Space, type TableColumnsType, Tooltip } from "antd";
-import {
-  SearchOutlined,
-  DollarCircleOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  BankOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, DollarCircleOutlined, DeleteOutlined, EditOutlined, BankOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
 const { Text } = Typography;
@@ -17,12 +11,13 @@ interface IProps {
   profileData: IProfile[];
   setUpdateData: (v: IProfile) => void;
   setOpenModalUpdate: (v: boolean) => void;
+  handleDeleteProfile: (id: string) => void;
 }
 
 const ProfileTable = (props: IProps) => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<number>(1);
-  const { profileData, setUpdateData,setOpenModalUpdate } = props;
+  const { profileData, setUpdateData, setOpenModalUpdate, handleDeleteProfile } = props;
 
   const totalBalance = profileData.reduce((sum, p) => sum + (p.balance ?? 0), 0);
 
@@ -77,7 +72,7 @@ const ProfileTable = (props: IProps) => {
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
                 />
                 <DeleteOutlined
-                  onClick={() => console.log("Delete", record)}
+                  onClick={() => handleDeleteProfile(record.id)}
                   style={{
                     fontSize: "18px",
                     color: "#555",
