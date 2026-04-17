@@ -3,7 +3,8 @@ import { createRoot } from "react-dom/client";
 import AppLayout from "@/components/layout/app.layout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ConfigProvider } from "antd";
-import AccountPage from "@/pages/account.page";
+import AccountPage from "@/pages/profile.page";
+import { App } from "antd";
 
 const router = createBrowserRouter([
   {
@@ -18,15 +19,17 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: "#ff6b00",
-          borderRadius: 6,
-        },
-      }}
-    >
-      <RouterProvider router={router} />
-    </ConfigProvider>
+    <App>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#ff6b00",
+            borderRadius: 6,
+          },
+        }}
+      >
+        <RouterProvider router={router} />
+      </ConfigProvider>
+    </App>
   </StrictMode>,
 );
