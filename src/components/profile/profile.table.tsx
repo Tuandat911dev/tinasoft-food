@@ -1,6 +1,12 @@
 import { useState } from "react";
-import { Table, Input, Select, Button, Tag, Typography, Space, type TableColumnsType } from "antd";
-import { SearchOutlined, DollarCircleOutlined } from "@ant-design/icons";
+import { Table, Input, Select, Button, Tag, Typography, Space, type TableColumnsType, Tooltip } from "antd";
+import {
+  SearchOutlined,
+  DollarCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  BankOutlined,
+} from "@ant-design/icons";
 import dayjs from "dayjs";
 
 const { Text } = Typography;
@@ -9,18 +15,20 @@ const formatCurrency = (value: number) => value.toLocaleString("vi-VN") + " ₫"
 
 interface IProps {
   profileData: IProfile[];
+  setUpdateData: (v: IProfile) => void;
+  setOpenModalUpdate: (v: boolean) => void;
 }
 
-const AccountTable = (props: IProps) => {
+const ProfileTable = (props: IProps) => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<number>(1);
-  const { profileData } = props;
+  const { profileData, setUpdateData,setOpenModalUpdate } = props;
 
   const totalBalance = profileData.reduce((sum, p) => sum + (p.balance ?? 0), 0);
 
   const filtered = profileData.filter((item) => {
     const matchName =
-      item.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+      item.full_name?.toLowerCase().includes(search.toLowerCase()) ||
       item.username?.toLowerCase().includes(search.toLowerCase());
     let matchStatus = true;
     if (statusFilter !== 2) {
@@ -30,6 +38,11 @@ const AccountTable = (props: IProps) => {
   });
 
   const columns: TableColumnsType<IProfile> = [
+    {
+      title: "ID",
+      key: "id",
+      hidden: true,
+    },
     {
       title: "STT",
       key: "stt",
@@ -42,7 +55,62 @@ const AccountTable = (props: IProps) => {
       key: "action",
       width: 100,
       align: "center",
-      render: () => <DollarCircleOutlined style={{ fontSize: 22, color: "#faad14", cursor: "pointer" }} />,
+      render: (_, record) => {
+        return (
+          <Tooltip
+            placement="right"
+            color="#fff"
+            title={
+              <div style={{ display: "flex", gap: "15px", alignItems: "center", padding: "6px" }}>
+                <EditOutlined
+                  onClick={() => {
+                    setUpdateData(record);
+                    setOpenModalUpdate(true);
+                  }}
+                  style={{
+                    fontSize: "18px",
+                    color: "#555",
+                    cursor: "pointer",
+                    transition: "color 0.3s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#faad14")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+                />
+                <DeleteOutlined
+                  onClick={() => console.log("Delete", record)}
+                  style={{
+                    fontSize: "18px",
+                    color: "#555",
+                    cursor: "pointer",
+                    transition: "color 0.3s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#ff4d4f")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+                />
+                <BankOutlined
+                  onClick={() => console.log("Delete", record)}
+                  style={{
+                    fontSize: "18px",
+                    color: "#555",
+                    cursor: "pointer",
+                    transition: "color 0.3s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#ff4d4f")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+                />
+              </div>
+            }
+          >
+            <DollarCircleOutlined
+              style={{
+                fontSize: 22,
+                color: "#faad14",
+                cursor: "pointer",
+              }}
+            />
+          </Tooltip>
+        );
+      },
     },
     {
       title: "Tên hiển thị",
@@ -93,7 +161,7 @@ const AccountTable = (props: IProps) => {
       width: 200,
       align: "center",
       render: (_, record) => {
-        return dayjs(record.updatedAt).format("HH:mm DD/MM/YYYY");
+        return dayjs(record.updated_at).format("HH:mm DD/MM/YYYY");
       },
     },
   ];
@@ -156,7 +224,7 @@ const AccountTable = (props: IProps) => {
         pagination={false}
         size="middle"
         scroll={{ y: "calc(100vh - 240px)" }}
-        rowKey="key"
+        rowKey="id"
         style={{ borderTop: "1px solid #f0f0f0" }}
         bordered={true}
       />
@@ -190,4 +258,4 @@ const AccountTable = (props: IProps) => {
   );
 };
 
-export default AccountTable;
+export default ProfileTable;
