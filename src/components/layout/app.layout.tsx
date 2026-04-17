@@ -34,16 +34,7 @@ const AppLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
           }}
         >
           {children ?? (
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 8,
-                padding: 32,
-                border: "1px solid #f0f0f0",
-                color: "#8c8c8c",
-                textAlign: "center",
-              }}
-            >
+            <div>
               <Outlet />
             </div>
           )}

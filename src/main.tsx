@@ -3,8 +3,9 @@ import { createRoot } from "react-dom/client";
 import AppLayout from "@/components/layout/app.layout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ConfigProvider } from "antd";
-import AccountPage from "@/pages/profile.page";
+import AccountPage from "@/pages/account.page";
 import { App } from "antd";
+import ProfilePage from "@/pages/profile.page";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <h1>home</h1> },
       { path: "account", element: <AccountPage /> },
+      { path: "profile", element: <ProfilePage /> },
     ],
   },
 ]);

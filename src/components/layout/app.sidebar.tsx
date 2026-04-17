@@ -15,7 +15,7 @@ const NAV_ITEMS: MenuProps["items"] = [
   {
     key: "tai-khoan",
     icon: <UserOutlined />,
-    label: "Tài khoản",
+    label: <Link to="/account">Tài khoản</Link>,
   },
   {
     key: "hom-nay-an-gi",
@@ -35,7 +35,7 @@ const NAV_ITEMS: MenuProps["items"] = [
   {
     key: "danh-sach-tai-khoan",
     icon: <DollarCircleOutlined />,
-    label: <Link to="/account">Danh sách tài khoản</Link>,
+    label: <Link to="/profile">Danh sách tài khoản</Link>,
   },
 ];
 

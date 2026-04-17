@@ -51,42 +51,53 @@ const ProfilePage = () => {
 
   return (
     <>
-      <Button
-        type="primary"
-        size="large"
-        icon={<PlusOutlined />}
-        onClick={() => setOpenModalCreate(true)}
+      <div
         style={{
-          background: "linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%)",
-          border: "none",
+          background: "#fff",
           borderRadius: 8,
-          fontWeight: 600,
-          boxShadow: "0 4px 12px rgba(255, 107, 53, 0.35)",
-          marginBottom: "10px",
-          display: "flex",
-          marginLeft: "auto",
+          padding: 20,
+          border: "1px solid #f0f0f0",
+          color: "#8c8c8c",
+          textAlign: "center",
         }}
       >
-        Thêm mới
-      </Button>
-      <ProfileTable
-        profileData={profileData}
-        setUpdateData={setUpdateData}
-        setOpenModalUpdate={setOpenModalUpdate}
-        handleDeleteProfile={handleDeleteProfile}
-      />
+        <Button
+          type="primary"
+          size="large"
+          icon={<PlusOutlined />}
+          onClick={() => setOpenModalCreate(true)}
+          style={{
+            background: "linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%)",
+            border: "none",
+            borderRadius: 8,
+            fontWeight: 600,
+            boxShadow: "0 4px 12px rgba(255, 107, 53, 0.35)",
+            marginBottom: "10px",
+            display: "flex",
+            marginLeft: "auto",
+          }}
+        >
+          Thêm mới
+        </Button>
+        <ProfileTable
+          profileData={profileData}
+          setUpdateData={setUpdateData}
+          setOpenModalUpdate={setOpenModalUpdate}
+          handleDeleteProfile={handleDeleteProfile}
+        />
 
-      <ProfileCreateModal
-        openModalCreate={openModalCreate}
-        onCancel={() => setOpenModalCreate(false)}
-        onSubmit={handleSubmit}
-      />
+        <ProfileCreateModal
+          openModalCreate={openModalCreate}
+          onCancel={() => setOpenModalCreate(false)}
+          onSubmit={handleSubmit}
+        />
 
-      <ProfileUpdateModal
-        openModalUpdate={openModalUpdate}
-        updateData={updateData}
-        onCancel={() => setOpenModalUpdate(false)}
-      />
+        <ProfileUpdateModal
+          openModalUpdate={openModalUpdate}
+          updateData={updateData}
+          onCancel={() => setOpenModalUpdate(false)}
+        />
+      </div>
     </>
   );
 };
