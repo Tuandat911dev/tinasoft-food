@@ -12,21 +12,36 @@ declare global {
   }
 
   interface IProfile {
-    id: number;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-    fullName: string;
+    id: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    full_name: string;
     username: string;
     status: 0 | 1;
     role: string;
     balance: number;
-    avatarPath: string | null;
-    coverPath: string | null;
-    avatarUrl?: string;
+    avatar_path: string | null;
+    cover_path: string | null;
+    avatar_url?: string;
   }
 
-  interface IProfileListMeta {
-    totalBalance: number;
+  export interface CreateProfileFormValues {
+    full_name: string;
+    username: string;
+    password: string;
+    confirmPassword: string;
+    role: "SuperAdmin" | "Admin" | "User";
+    status: 0 | 1;
+    avatar_path?: string;
+  }
+
+  export interface UpdateProfileFormValues {
+    username: string;
+    full_name: string;
+    password: string;
+    role: "SuperAdmin" | "Admin" | "User";
+    status: 0 | 1;
+    avatar_path?: string;
   }
 }
