@@ -1,11 +1,12 @@
 import { supabase } from "@/utils/supabase";
 
 export async function getAllProfiles(): Promise<IProfile[]> {
-  const { data, error } = await supabase.from("profiles").select("*").order("id", { ascending: false });
+  const { data, error } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
 
   if (error) throw error;
   return (data ?? []) as IProfile[];
 }
+
 export async function createProfile(values: CreateProfileFormValues) {
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email: `${values.username}@tinasoft.vn`,
@@ -33,4 +34,33 @@ export async function createProfile(values: CreateProfileFormValues) {
   if (profileError) throw profileError;
 
   return authData.user;
+}
+
+export async function updateProfile(userId: string, values: Partial<UpdateProfileFormValues>) {
+  if (values.full_name || values.username) {
+    const { error: authError } = await supabase.auth.updateUser({
+      data: {
+        full_name: values.full_name,
+        username: values.username,
+      },
+    });
+    if (authError) throw authError;
+  }
+
+  const { data, error: profileError } = await supabase
+    .from("profiles")
+    .update({
+      full_name: values.full_name,
+      username: values.username,
+      role: values.role,
+      status: values.status,
+      avatar_path: values.avatar_path,
+    })
+    .eq("id", userId)
+    .select()
+    .single();
+
+  if (profileError) throw profileError;
+
+  return data;
 }
