@@ -1,5 +1,18 @@
 import { useState } from "react";
-import { Modal, Form, Input, Select, Button, Typography, Avatar, Upload, Space, Divider, type UploadProps } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Button,
+  Typography,
+  Avatar,
+  Upload,
+  Space,
+  Divider,
+  type UploadProps,
+  App,
+} from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -58,6 +71,7 @@ const ProfileCreateModal = (props: IProps) => {
   const [form] = Form.useForm<CreateProfileFormValues>();
   const [loading, setLoading] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const { message } = App.useApp();
 
   const handleFinish = async (values: CreateProfileFormValues) => {
     setLoading(true);
@@ -66,15 +80,17 @@ const ProfileCreateModal = (props: IProps) => {
       form.resetFields();
       setAvatarPreview(null);
       onCancel();
+      message.success("Tạo tài khoản thành công");
     } finally {
       setLoading(false);
+      message.error("Có lỗi, tạo tài khoản không thành công");
     }
   };
 
   const handleCancel = () => {
     form.resetFields();
     setAvatarPreview(null);
-        onCancel();
+    onCancel();
   };
 
   const uploadProps: UploadProps = {
