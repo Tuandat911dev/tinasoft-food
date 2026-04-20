@@ -7,6 +7,7 @@ import AccountPage from "@/pages/account.page";
 import { App } from "antd";
 import ProfilePage from "@/pages/profile.page";
 import LoginPage from "./pages/auth/login.page";
+import RegisterPage from "./pages/auth/register.page";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
 ]);
 

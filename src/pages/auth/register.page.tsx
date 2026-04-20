@@ -4,33 +4,20 @@ import { EyeInvisibleOutlined, EyeOutlined, GoogleOutlined } from "@ant-design/i
 import backgroundImage from "@/assets/background-login.png";
 import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmail } from "@/services/api/auth.api";
 import brand from "@/assets/brand.svg";
 
-export default function LoginPage() {
+const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { message } = App.useApp();
   const navigate = useNavigate();
-
-  const handleLogin = async (values: { email: string; password: string }) => {
-    setLoading(true);
-    try {
-      const data = await signInWithEmail(values.email, values.password);
-      message.success("Đăng nhập thành công");
-      setLoading(false);
-      navigate("/");
-    } catch (error) {
-      setLoading(false);
-    }
-  };
 
   return (
     <div style={styles.root}>
       {/* Top header */}
       <div style={styles.header}>
         <span style={styles.headerLogo}>
-          <img src={brand} alt="" style={{width: "40px"}}/>
+          <img src={brand} alt="" style={{ width: "40px" }} />
           Tinasoft Vietnam
         </span>
       </div>
@@ -45,9 +32,9 @@ export default function LoginPage() {
             </div>
 
             <p style={styles.subtitle}>Xin chào dân Tina đang đói :))</p>
-            <h2 style={styles.title}>Đăng nhập</h2>
+            <h2 style={styles.title}>Đăng Ký </h2>
 
-            <Form layout="vertical" onFinish={handleLogin} requiredMark={false}>
+            <Form layout="vertical" onFinish={() => console.log(1)} requiredMark={false}>
               <Form.Item
                 label={<span style={styles.label}>Tài khoản Tinasoft</span>}
                 name="email"
@@ -74,11 +61,29 @@ export default function LoginPage() {
                 />
               </Form.Item>
 
+              <Form.Item
+                label={<span style={styles.label}>Xác nhận mật khẩu</span>}
+                name="rePassword"
+                rules={[
+                  { required: true, message: "Vui lòng xác nhận mật khẩu" },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error("Mật khẩu xác nhận không khớp"));
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password type="password" placeholder="••••••••" style={styles.input} size="large" />
+              </Form.Item>
+
               <div style={styles.linksRow}>
                 <span style={styles.newUser}>
-                  DÂN MỚI?{" "}
-                  <a href="/register" style={styles.link}>
-                    Đăng ký
+                  DÂN CŨ?{" "}
+                  <a href="/login" style={styles.link}>
+                    Đăng nhập
                   </a>
                 </span>
                 <a href="#" style={styles.link}>
@@ -88,7 +93,7 @@ export default function LoginPage() {
 
               <Form.Item style={{ marginTop: 8 }}>
                 <Button htmlType="submit" loading={loading} block size="large" style={styles.loginBtn}>
-                  Đăng nhập
+                  Đăng Ký
                 </Button>
               </Form.Item>
             </Form>
@@ -153,7 +158,7 @@ export default function LoginPage() {
       `}</style>
     </div>
   );
-}
+};
 
 const styles: Record<string, React.CSSProperties> = {
   root: {
@@ -363,3 +368,5 @@ const styles: Record<string, React.CSSProperties> = {
     pointerEvents: "none",
   },
 };
+
+export default RegisterPage;
