@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input, Button, Typography, Upload, Divider, Space, type UploadProps } from "antd";
 import {
   UserOutlined,
@@ -9,36 +9,41 @@ import {
   SaveOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+import { getUserInfo, updateInfo } from "@/services/api/auth.api";
 
 const { Text, Title } = Typography;
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface ProfileData {
-  fullName: string;
-  username: string;
-  balance: number;
-  avatarUrl?: string;
-  coverUrl?: string;
-}
-
-const MOCK_PROFILE: ProfileData = {
-  fullName: "Supabase User",
-  username: "supabase_admin",
-  balance: 500000,
-};
-
 const AccountPage = () => {
-  const [profile, setProfile] = useState<ProfileData>(MOCK_PROFILE);
+  const [profile, setProfile] = useState<IProfile | undefined>();
   const [editing, setEditing] = useState(false);
   const [form] = Form.useForm();
 
-  const [draftAvatar, setDraftAvatar] = useState<string | undefined>(profile.avatarUrl);
-  const [draftCover, setDraftCover] = useState<string | undefined>(profile.coverUrl);
+  const [draftAvatar, setDraftAvatar] = useState<string | undefined>();
+  const [draftCover, setDraftCover] = useState<string | undefined>();
+
+  const loadData = async () => {
+    const data: IProfile | undefined = await getUserInfo();
+    setProfile(data);
+    if (profile?.avatar_path) {
+      setDraftAvatar(profile?.avatar_path);
+    }
+    if (profile?.cover_path) {
+      setDraftCover(profile?.cover_path);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const startEdit = () => {
-    form.setFieldsValue({ fullName: profile.fullName });
-    setDraftAvatar(profile.avatarUrl);
-    setDraftCover(profile.coverUrl);
+    form.setFieldsValue({ fullName: profile?.full_name });
+    if (profile?.avatar_path) {
+      setDraftAvatar(profile?.avatar_path);
+    }
+    if (profile?.cover_path) {
+      setDraftCover(profile?.cover_path);
+    }
     setEditing(true);
   };
 
@@ -50,12 +55,8 @@ const AccountPage = () => {
   const handleSave = async () => {
     try {
       const values = await form.validateFields();
-      setProfile((prev) => ({
-        ...prev,
-        fullName: values.fullName,
-        avatarUrl: draftAvatar,
-        coverUrl: draftCover,
-      }));
+      const data = await updateInfo(profile!.id, values.full_name, draftAvatar!, draftCover!);
+      loadData();
       setEditing(false);
     } catch (error) {
       console.log("Validate failed:", error);
@@ -76,9 +77,8 @@ const AccountPage = () => {
 
   const formatBalance = (val: number) => val.toLocaleString("vi-VN") + " ₫";
 
-  // Quyết định ảnh nào sẽ hiển thị (ảnh nháp khi đang sửa, hoặc ảnh thật khi đang xem)
-  const displayAvatar = editing ? draftAvatar : profile.avatarUrl;
-  const displayCover = editing ? draftCover : profile.coverUrl;
+  const displayAvatar = editing ? draftAvatar : profile?.avatar_path;
+  const displayCover = editing ? draftCover : profile?.cover_path;
 
   return (
     <>
@@ -194,9 +194,9 @@ const AccountPage = () => {
             {/* Name and Username */}
             <div style={{ flex: 1, paddingBottom: 8 }}>
               <Title level={3} style={{ margin: 0, fontWeight: 800 }}>
-                {profile.fullName}
+                {profile?.full_name}
               </Title>
-              <Text type="secondary">@{profile.username}</Text>
+              <Text type="secondary">@{profile?.username}</Text>
             </div>
 
             {/* Action Buttons */}
@@ -240,7 +240,7 @@ const AccountPage = () => {
                 </Text>
                 {editing ? (
                   <Form.Item
-                    name="fullName"
+                    name="full_name"
                     rules={[{ required: true, message: "Tên không được để trống" }]}
                     style={{ margin: 0 }}
                   >
@@ -256,7 +256,7 @@ const AccountPage = () => {
                       color: "#262626",
                     }}
                   >
-                    {profile.fullName}
+                    {profile?.full_name}
                   </div>
                 )}
               </div>
@@ -280,7 +280,7 @@ const AccountPage = () => {
                   gap: 10,
                 }}
               >
-                <MailOutlined /> {profile.username}
+                <MailOutlined /> {profile?.username}
               </div>
             </div>
 
@@ -303,7 +303,7 @@ const AccountPage = () => {
                   gap: 10,
                 }}
               >
-                <DollarCircleOutlined /> {formatBalance(profile.balance)}
+                <DollarCircleOutlined /> {formatBalance(profile?.balance || 0)}
               </div>
             </div>
           </Form>

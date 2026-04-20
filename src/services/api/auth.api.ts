@@ -35,4 +35,32 @@ export async function register(email: string, password: string) {
   return authData.user;
 }
 
-export async function getUserInfo() {}
+export async function getUserInfo() {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const { data, error } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+
+    if (error) throw error;
+    return data as IProfile;
+  }
+}
+
+export async function updateInfo(user_id: string, full_name: string, avatar_path: string, cover_path: string) {
+  const { data, error: profileError } = await supabase
+    .from("profiles")
+    .update({
+      full_name: full_name,
+      avatar_path: avatar_path,
+      cover_path: cover_path,
+    })
+    .eq("id", user_id)
+    .select()
+    .single();
+
+  if (profileError) throw profileError;
+
+  return data;
+}
