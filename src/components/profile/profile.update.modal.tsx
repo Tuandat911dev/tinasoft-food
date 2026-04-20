@@ -1,5 +1,18 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Input, Select, Button, Typography, Avatar, Upload, Space, Divider, type UploadProps } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Button,
+  Typography,
+  Avatar,
+  Upload,
+  Space,
+  Divider,
+  type UploadProps,
+  App,
+} from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -17,6 +30,7 @@ interface IProps {
   openModalUpdate: boolean;
   updateData: IProfile | null;
   onCancel: () => void;
+  loadData: () => void;
 }
 
 const ROLE_OPTIONS = [
@@ -55,16 +69,17 @@ const STATUS_OPTIONS = [
 ];
 
 const ProfileUpdateModal = (props: IProps) => {
-  const { openModalUpdate, onCancel, updateData } = props;
+  const { openModalUpdate, onCancel, updateData, loadData } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const { message } = App.useApp();
 
   useEffect(() => {
     if (openModalUpdate && updateData) {
       console.log(updateData);
       form.setFieldsValue({
-        fullName: updateData.full_name,
+        full_name: updateData.full_name,
         username: updateData.username,
         role: updateData.role,
         status: updateData.status,
@@ -79,8 +94,11 @@ const ProfileUpdateModal = (props: IProps) => {
     setLoading(true);
     try {
       const { confirmPassword, ...submitData } = values;
-      await updateProfile(updateData!.id, submitData);
+      await updateProfile(updateData!.id, { ...submitData, avatar_path: avatarPreview ?? undefined });
+      setAvatarPreview(null);
+      loadData();
       handleCancel();
+      message.success("Cập nhật người dùng thành công");
     } finally {
       setLoading(false);
     }
@@ -211,7 +229,7 @@ const ProfileUpdateModal = (props: IProps) => {
 
           <Form form={form} layout="vertical" onFinish={handleFinish} requiredMark={false}>
             <Form.Item
-              name="fullName"
+              name="full_name"
               label="Tên hiển thị"
               rules={[{ required: true, message: "Không được để trống tên" }]}
             >

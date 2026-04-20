@@ -96,6 +96,7 @@ const ProfilePage = () => {
           openModalUpdate={openModalUpdate}
           updateData={updateData}
           onCancel={() => setOpenModalUpdate(false)}
+          loadData={loadData}
         />
       </div>
     </>
