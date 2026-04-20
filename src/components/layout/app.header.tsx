@@ -1,11 +1,8 @@
 import { Layout, Avatar, Dropdown, Button, Typography } from "antd";
 import type { MenuProps } from "antd";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  QuestionCircleOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
+import { MenuFoldOutlined, MenuUnfoldOutlined, QuestionCircleOutlined, DownOutlined } from "@ant-design/icons";
+import { signout } from "@/services/api/auth.api";
+import { useNavigate } from "react-router-dom";
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -16,14 +13,24 @@ interface AppHeaderProps {
   title?: string;
 }
 
-const USER_MENU_ITEMS: MenuProps["items"] = [
-  { key: "profile", label: "Hồ sơ" },
-  { key: "settings", label: "Cài đặt" },
-  { type: "divider" },
-  { key: "logout", label: "Đăng xuất", danger: true },
-];
-
 export const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, onToggle, title = "Chia tiền ăn chơi" }) => {
+  const navigate = useNavigate();
+
+  const USER_MENU_ITEMS: MenuProps["items"] = [
+    { key: "profile", label: "Hồ sơ" },
+    { key: "settings", label: "Cài đặt" },
+    { type: "divider" },
+    {
+      key: "logout",
+      label: "Đăng xuất",
+      danger: true,
+      onClick: async () => {
+        await signout();
+        navigate("/login");
+      },
+    },
+  ];
+
   return (
     <Header
       style={{
