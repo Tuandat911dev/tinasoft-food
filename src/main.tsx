@@ -6,6 +6,7 @@ import { ConfigProvider } from "antd";
 import AccountPage from "@/pages/account.page";
 import { App } from "antd";
 import ProfilePage from "@/pages/profile.page";
+import LoginPage from "./pages/auth/login.page";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       { path: "account", element: <AccountPage /> },
       { path: "profile", element: <ProfilePage /> },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
 ]);
 
