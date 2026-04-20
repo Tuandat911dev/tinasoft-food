@@ -5,12 +5,26 @@ import backgroundImage from "@/assets/background-login.png";
 import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import brand from "@/assets/brand.svg";
+import { register } from "@/services/api/auth.api";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { message } = App.useApp();
   const navigate = useNavigate();
+
+  const handleRegister = async (values: { email: string; password: string }) => {
+    setLoading(true);
+    try {
+      const data = await register(values.email, values.password);
+      message.success("Đăng ký tài khoản thành công");
+      setLoading(false);
+      navigate("/login");
+    } catch (error: any) {
+      message.error(error);
+      setLoading(false);
+    }
+  };
 
   return (
     <div style={styles.root}>
@@ -34,7 +48,7 @@ const RegisterPage = () => {
             <p style={styles.subtitle}>Xin chào dân Tina đang đói :))</p>
             <h2 style={styles.title}>Đăng Ký </h2>
 
-            <Form layout="vertical" onFinish={() => console.log(1)} requiredMark={false}>
+            <Form layout="vertical" onFinish={handleRegister} requiredMark={false}>
               <Form.Item
                 label={<span style={styles.label}>Tài khoản Tinasoft</span>}
                 name="email"
