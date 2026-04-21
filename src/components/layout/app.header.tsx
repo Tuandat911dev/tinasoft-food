@@ -17,9 +17,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, onToggle, title
   const navigate = useNavigate();
 
   const USER_MENU_ITEMS: MenuProps["items"] = [
-    { key: "profile", label: "Hồ sơ" },
-    { key: "settings", label: "Cài đặt" },
-    { type: "divider" },
+    { key: "change-password", label: "Đổi mật khẩu" },
     {
       key: "logout",
       label: "Đăng xuất",
