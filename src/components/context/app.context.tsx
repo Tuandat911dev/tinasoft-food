@@ -27,8 +27,10 @@ const AppProvider = (props: TProps) => {
       setIsAppLoading(true);
       try {
         const data = await getUserInfo();
-        setProfile(data!);
-        setIsAuthenticated(true);
+        if (data) {
+          setProfile(data);
+          setIsAuthenticated(true);
+        }
       } catch {
         setProfile(null);
       } finally {

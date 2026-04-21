@@ -9,6 +9,7 @@ import ProfilePage from "@/pages/profile.page";
 import LoginPage from "./pages/auth/login.page";
 import RegisterPage from "./pages/auth/register.page";
 import { AppProvider } from "./components/context/app.context";
+import NotFoundPage from "./pages/error/not.found.page";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
 
