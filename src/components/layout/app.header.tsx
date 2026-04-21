@@ -1,8 +1,9 @@
-import { Layout, Avatar, Dropdown, Button, Typography } from "antd";
+import { Layout, Avatar, Dropdown, Button, Typography, Divider } from "antd";
 import type { MenuProps } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined, QuestionCircleOutlined, DownOutlined } from "@ant-design/icons";
 import { signout } from "@/services/api/auth.api";
 import { useNavigate } from "react-router-dom";
+import { useCurrentApp } from "@/components/context/app.context";
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -15,6 +16,7 @@ interface AppHeaderProps {
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, onToggle, title = "Chia tiền ăn chơi" }) => {
   const navigate = useNavigate();
+  const { profile, isAuthenticated } = useCurrentApp();
 
   const USER_MENU_ITEMS: MenuProps["items"] = [
     { key: "change-password", label: "Đổi mật khẩu" },
@@ -76,7 +78,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, onToggle, title
           shape="circle"
           icon={<QuestionCircleOutlined style={{ fontSize: 18, color: "#8c8c8c" }} />}
         />
-
+        <Divider type="vertical" style={{ background: "#373737", height: "25px" }} />
         <Dropdown menu={{ items: USER_MENU_ITEMS }} trigger={["click"]} placement="bottomRight">
           <Button
             type="text"
@@ -89,10 +91,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, onToggle, title
               borderRadius: 8,
             }}
           >
-            <Avatar size={28} style={{ background: "#ff6b35", fontSize: 12, flexShrink: 0 }}>
-              S
-            </Avatar>
-            <Text style={{ fontSize: 14, color: "#262626", fontWeight: 500 }}>supabase</Text>
+            <Avatar
+              src={profile?.avatar_path}
+              size={28}
+              style={{ background: "#ff6b35", fontSize: 12, flexShrink: 0 }}
+            />
+            <Text style={{ fontSize: 14, color: "#262626", fontWeight: 500 }}>{profile?.full_name}</Text>
             <DownOutlined style={{ fontSize: 10, color: "#8c8c8c" }} />
           </Button>
         </Dropdown>
