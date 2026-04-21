@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Form, Input, Button, Typography, Upload, Divider, Space, type UploadProps } from "antd";
 import {
   UserOutlined,
@@ -9,32 +9,17 @@ import {
   SaveOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { getUserInfo, updateInfo } from "@/services/api/auth.api";
+import { updateInfo } from "@/services/api/auth.api";
+import { useCurrentApp } from "@/components/context/app.context";
 
 const { Text, Title } = Typography;
 
 const AccountPage = () => {
-  const [profile, setProfile] = useState<IProfile | undefined>();
   const [editing, setEditing] = useState(false);
   const [form] = Form.useForm();
-
+  const { profile, setProfile } = useCurrentApp();
   const [draftAvatar, setDraftAvatar] = useState<string | undefined>();
   const [draftCover, setDraftCover] = useState<string | undefined>();
-
-  const loadData = async () => {
-    const data: IProfile | undefined = await getUserInfo();
-    setProfile(data);
-    if (profile?.avatar_path) {
-      setDraftAvatar(profile?.avatar_path);
-    }
-    if (profile?.cover_path) {
-      setDraftCover(profile?.cover_path);
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const startEdit = () => {
     form.setFieldsValue({ fullName: profile?.full_name });
@@ -56,8 +41,8 @@ const AccountPage = () => {
     try {
       const values = await form.validateFields();
       const data = await updateInfo(profile!.id, values.full_name, draftAvatar!, draftCover!);
-      loadData();
       setEditing(false);
+      setProfile(data);
     } catch (error) {
       console.log("Validate failed:", error);
     }
@@ -83,7 +68,6 @@ const AccountPage = () => {
   return (
     <>
       <style>{`
-        /* Cover */
         .ant-upload {
             width: 100%;
         }
@@ -98,7 +82,6 @@ const AccountPage = () => {
         }
         .pcov-wrap.editing:hover .pcov-mask { opacity: 1; }
 
-        /* Avatar */
         .pavt-wrap { position: relative; width: 110px; height: 110px; border-radius: 20px; overflow: hidden; background: #fff; }
         .pavt-wrap.editing { cursor: pointer; border: 3px solid #ff6b35 !important; }
         
@@ -109,7 +92,6 @@ const AccountPage = () => {
         }
         .pavt-wrap.editing:hover .pavt-mask { opacity: 1; }
 
-        /* Custom Input */
         .p-input-edit .ant-input {
            border-radius: 8px !important;
            padding: 8px 12px;
@@ -232,7 +214,6 @@ const AccountPage = () => {
 
           {/* ── SECTION 3: FORM FIELDS ── */}
           <Form form={form} layout="horizontal" labelCol={{ span: 6 }} labelAlign="left" className="p-input-edit">
-            {/* FIELD: FULL NAME (Sửa trực tiếp tại đây) */}
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
                 <Text strong style={{ color: "#595959" }}>
@@ -243,6 +224,7 @@ const AccountPage = () => {
                     name="full_name"
                     rules={[{ required: true, message: "Tên không được để trống" }]}
                     style={{ margin: 0 }}
+                    initialValue={profile?.full_name}
                   >
                     <Input prefix={<UserOutlined />} placeholder="Nhập tên mới..." size="large" />
                   </Form.Item>
@@ -262,7 +244,6 @@ const AccountPage = () => {
               </div>
             </div>
 
-            {/* FIELD: USERNAME (Read-only) */}
             <div style={{ marginBottom: 20 }}>
               <Text strong style={{ color: "#595959" }}>
                 Tên tài khoản
@@ -284,7 +265,6 @@ const AccountPage = () => {
               </div>
             </div>
 
-            {/* FIELD: BALANCE (Read-only) */}
             <div style={{ marginBottom: 20 }}>
               <Text strong style={{ color: "#595959" }}>
                 Số dư tài khoản

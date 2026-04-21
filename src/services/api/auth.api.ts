@@ -1,5 +1,4 @@
 import { supabase } from "@/utils/supabase";
-import { IoFastFood } from "react-icons/io5";
 
 export async function signInWithEmail(email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -63,7 +62,7 @@ export async function updateInfo(user_id: string, full_name: string, avatar_path
 
   if (profileError) throw profileError;
 
-  return data;
+  return data as IProfile;
 }
 
 export async function signout() {

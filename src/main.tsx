@@ -8,6 +8,7 @@ import { App } from "antd";
 import ProfilePage from "@/pages/profile.page";
 import LoginPage from "./pages/auth/login.page";
 import RegisterPage from "./pages/auth/register.page";
+import { AppProvider } from "./components/context/app.context";
 
 const router = createBrowserRouter([
   {
@@ -32,16 +33,18 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#ff6b00",
-            borderRadius: 6,
-          },
-        }}
-      >
-        <RouterProvider router={router} />
-      </ConfigProvider>
+      <AppProvider>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#ff6b00",
+              borderRadius: 6,
+            },
+          }}
+        >
+          <RouterProvider router={router} />
+        </ConfigProvider>
+      </AppProvider>
     </App>
   </StrictMode>,
 );
