@@ -16,7 +16,7 @@ interface AppHeaderProps {
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, onToggle, title = "Chia tiền ăn chơi" }) => {
   const navigate = useNavigate();
-  const { profile, isAuthenticated } = useCurrentApp();
+  const { profile } = useCurrentApp();
 
   const USER_MENU_ITEMS: MenuProps["items"] = [
     { key: "change-password", label: "Đổi mật khẩu" },
