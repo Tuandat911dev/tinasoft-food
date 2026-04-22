@@ -1,18 +1,21 @@
 import { Layout } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppSidebar } from "@/components/layout/app.sidebar";
 import { AppHeader } from "@/components/layout/app.header";
 import { Content } from "antd/es/layout/layout";
 import "@/styles/reset.css";
 import "@/styles/style.css";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useCurrentApp } from "../context/app.context";
+import { useCurrentApp } from "@/components/context/app.context";
 
 const AppLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState("chia-tien-an-choi");
   const { isAuthenticated } = useCurrentApp();
   const location = useLocation();
+
+  useEffect(() => {
+  }, [isAuthenticated]);
 
   const PAGE_TITLES: Record<string, string> = {
     "tai-khoan": "Tài khoản",
@@ -22,6 +25,7 @@ const AppLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     "danh-sach-tai-khoan": "Danh sách tài khoản",
   };
 
+  console.log(isAuthenticated);
   return isAuthenticated ? (
     <Layout style={{ minHeight: "100vh", background: "#fafafa" }}>
       <AppSidebar collapsed={collapsed} selectedKey={selectedKey} onSelect={setSelectedKey} />

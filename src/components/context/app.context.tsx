@@ -43,36 +43,39 @@ const AppProvider = (props: TProps) => {
 
   return (
     <>
-      <div
-        style={{
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "fixed",
-          inset: 0,
-          background: "#fff",
-          zIndex: 9999,
-          transition: "all 0.5s ease",
-          opacity: isAppLoading ? 1 : 0,
-          visibility: isAppLoading ? "visible" : "hidden",
-          pointerEvents: isAppLoading ? "auto" : "none",
-        }}
-      >
-        <FadeLoader color="#f25d1d" loading={true} height="15px" />
-      </div>
-      <CurrentAppContext.Provider
-        value={{
-          isAuthenticated,
-          profile,
-          isAppLoading,
-          setProfile,
-          setIsAuthenticated,
-          setIsAppLoading,
-        }}
-      >
-        {props.children}
-      </CurrentAppContext.Provider>
+      {isAppLoading ? (
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "fixed",
+            inset: 0,
+            background: "#fff",
+            zIndex: 9999,
+            transition: "all 0.5s ease",
+            opacity: isAppLoading ? 1 : 0,
+            visibility: isAppLoading ? "visible" : "hidden",
+            pointerEvents: isAppLoading ? "auto" : "none",
+          }}
+        >
+          <FadeLoader color="#f25d1d" />
+        </div>
+      ) : (
+        <CurrentAppContext.Provider
+          value={{
+            isAuthenticated,
+            profile,
+            isAppLoading,
+            setProfile,
+            setIsAuthenticated,
+            setIsAppLoading,
+          }}
+        >
+          {props.children}
+        </CurrentAppContext.Provider>
+      )}
     </>
   );
 };

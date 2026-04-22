@@ -4,22 +4,29 @@ import { EyeInvisibleOutlined, EyeOutlined, GoogleOutlined } from "@ant-design/i
 import backgroundImage from "@/assets/background-login.png";
 import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmail } from "@/services/api/auth.api";
+import { getUserInfo, handleGoogleLogin, signInWithEmail } from "@/services/api/auth.api";
 import brand from "@/assets/brand.svg";
+import { useCurrentApp } from "@/components/context/app.context";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { message } = App.useApp();
   const navigate = useNavigate();
+  const { setIsAuthenticated, setProfile, setIsAppLoading } = useCurrentApp();
 
   const handleLogin = async (values: { email: string; password: string }) => {
     setLoading(true);
     try {
-      const data = await signInWithEmail(values.email, values.password);
-      message.success("Đăng nhập thành công");
-      setLoading(false);
-      navigate("/");
+      await signInWithEmail(values.email, values.password);
+      const data = await getUserInfo();
+      if (data) {
+        setProfile(data);
+        setIsAuthenticated(true);
+        navigate("/");
+        message.success("Đăng nhập thành công");
+        setLoading(false);
+      }
     } catch (error) {
       setLoading(false);
     }
@@ -30,7 +37,7 @@ export default function LoginPage() {
       {/* Top header */}
       <div style={styles.header}>
         <span style={styles.headerLogo}>
-          <img src={brand} alt="" style={{width: "40px"}}/>
+          <img src={brand} alt="" style={{ width: "40px" }} />
           Tinasoft Vietnam
         </span>
       </div>
