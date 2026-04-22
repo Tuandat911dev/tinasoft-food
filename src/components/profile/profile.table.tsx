@@ -12,12 +12,13 @@ interface IProps {
   setUpdateData: (v: IProfile) => void;
   setOpenModalUpdate: (v: boolean) => void;
   handleDeleteProfile: (id: string) => void;
+  loading: boolean;
 }
 
 const ProfileTable = (props: IProps) => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<number>(1);
-  const { profileData, setUpdateData, setOpenModalUpdate, handleDeleteProfile } = props;
+  const { profileData, setUpdateData, setOpenModalUpdate, handleDeleteProfile, loading } = props;
 
   const totalBalance = profileData.reduce((sum, p) => sum + (p.balance ?? 0), 0);
 
@@ -222,6 +223,7 @@ const ProfileTable = (props: IProps) => {
         rowKey="id"
         style={{ borderTop: "1px solid #f0f0f0" }}
         bordered={true}
+        loading={loading}
       />
 
       {/* Ant Design orange active row override */}

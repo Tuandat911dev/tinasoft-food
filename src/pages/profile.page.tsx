@@ -12,14 +12,18 @@ const ProfilePage = () => {
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [updateData, setUpdateData] = useState<IProfile | null>(null);
   const { message } = App.useApp();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const loadData = async () => {
     try {
+      setLoading(true);
       const data: IProfile[] = await getAllProfiles();
       setProfileData(data || []);
     } catch (error: unknown) {
       message.error("Không thể tải dữ liệu!");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,6 +88,7 @@ const ProfilePage = () => {
           setUpdateData={setUpdateData}
           setOpenModalUpdate={setOpenModalUpdate}
           handleDeleteProfile={handleDeleteProfile}
+          loading={loading}
         />
 
         <ProfileCreateModal
